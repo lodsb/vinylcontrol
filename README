@@ -1,0 +1,33 @@
+What?
+
+vinylcontrol~ is an external that allows controling pd- or max/msp- (as well as sndobj) patches using timecode vinyl.
+
+The supported vinyls are:
+Serato (2nd Edition)
+Traktor/Finalscratch (2nd Edition)
+Since the code is based on flext it should compile on Mac OS 9/X, Windows and Linux (tested). The timecoder-code is taken from xwax. More info regarding the build process on the respective platforms is available at the flext-site. In general, you should be able to run build.sh/.bat <platform> <compiler> from within the source-code directory once the toolkits/headers are installed.
+You need flext >= 0.4.1 in order to build this and of course the headers for either pure data or max/msp
+Source & Binaries
+
+src: vinylcontrol.tar.gz
+pd-linux: vinylcontrol~.pd_linux
+...more to come if someone sends me the binaries ... ;)
+Usage:
+
+vinylcontrol~ accepts two (optional) parameters:
+1) vinyl-type (serato_2a, serato_2b, serato_cd, traktor_a, traktor_b)
+2) smoothing: used to average pitch-values and the alive bang since the event generation is taking place on dsp-level.
+The default values are serato_2a and 10.
+
+The 3 outlets provide:
+1) alive - bang is sent when the decoding starts/stops (ie. input is above a certain threshold and timecode is being tracked)
+2) pitch - float that is 1 at 33 rpm in forward direction; negative values indicate backward-movement
+3) relative position; the start is the first cue-point (first tracked timecode where the needle was dropped) and can be reset to the current timecode-position by sending a bang to the third inlet. The end position is the last sane timecode on the record. The position is calculated using (current_position-start_position)/(last_position-start_posit ion), thus giving a range between 0 and 1 between the end position and the relative start position and negative values for positions before the start position.
+
+The 3 inlets are:
+1) left input
+2) right input (take care of the cabling from your turntable)
+3) reset for the relative start position
+
+
+The timecoder is used from xwax (http://www.xwax.co.uk), wrapping using flext was done by Niklas Klügel (kluegel(at)in(dot)tum(dot)de)
