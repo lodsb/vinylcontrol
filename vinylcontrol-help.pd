@@ -1,0 +1,46 @@
+#N canvas 576 216 1018 649 10;
+#X obj 145 153 dac~;
+#X obj 110 49 adc~;
+#X obj 224 94 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 45 210 vinylcontrol~ serato_2a 10;
+#X text 442 35 vinylcontrol~ accepts two (optional) parameters: 1)
+vinyl-type (serato_2a \, serato_2b \, serato_cd \, traktor_a \, traktor_b)
+2) smoothing: used to average pitch-values and the alive bang since
+the event generation is taking place on dsp-level The 3 outlets provide:
+1) alive - bang is sent when the decoding starts/stops (ie. input is
+above a certain threshold and timecode is being tracked) 2) pitch -
+float that is 1 at 33 rpm in forward direction \; negative values indicate
+backward-movement 3) relative position \; the start is the first cue-point
+(first tracked timecode where the needle was dropped) and can be reset
+to the current timecode-position by sending a band to the third inlet.
+the end position is the last sane timecode on the record. the position
+is calculated using (current_position-start_position)/(last_position-start_position)
+\, thus giving a range between 0 and 1 between the end position and
+the relative start position and negative values for positions before
+the start position. The 3 inlets are: 1) left input 2) right input
+(take care of the cabling from your turntable) 3) reset for the relative
+start position The timecoder is used from xwax (http://www.xwax.co.uk)
+\, wrapping using flext was done by Niklas Klügel <kluegel@in.tum.de>.
+;
+#X obj 224 240 print position:;
+#X obj 134 262 print pitch;
+#X obj 45 295 print decoding;
+#X msg 256 105 vinyl serato_cd;
+#X msg 256 175 smoothing \$1;
+#X msg 246 84 vinyl serato_2a;
+#X floatatom 256 154 5 0 0 0 - - -, f 5;
+#X text 242 66 set vinyl type :;
+#X text 256 135 set smooting iteration \;;
+#X connect 1 0 0 0;
+#X connect 1 0 3 0;
+#X connect 1 1 0 1;
+#X connect 1 1 3 1;
+#X connect 2 0 3 2;
+#X connect 3 0 7 0;
+#X connect 3 1 6 0;
+#X connect 3 2 5 0;
+#X connect 8 0 3 2;
+#X connect 9 0 3 2;
+#X connect 10 0 3 2;
+#X connect 11 0 9 0;
