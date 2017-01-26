@@ -152,7 +152,7 @@ void vinylcontrol::m_output_values() {
             hasBeenAlive = 0;
             ToOutBang(0);
     }
-
+    ToOutFloat(0,hasBeenAlive);
     smoothingIterator++;
 }
 
